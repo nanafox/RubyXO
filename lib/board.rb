@@ -31,9 +31,9 @@ class Board
   # Return the string representation of the board.
   def to_s
     " #{@cells[0]} | #{@cells[1]} | #{@cells[2]} \n" \
-      "-----------\n" \
+      "---+---+---\n" \
       " #{@cells[3]} | #{@cells[4]} | #{@cells[5]} \n" \
-      "-----------\n" \
+      "---+---+---\n" \
       " #{@cells[6]} | #{@cells[7]} | #{@cells[8]} \n"
   end
 
@@ -51,13 +51,18 @@ class Board
   # Update the board with a move.
   # @param position The position to insert the move.
   # @param character The 'X' or 'O' character to put on the board.
-  # @return true if the update was successful, false otherwise.
+  # @return true if the update was successful, false and the reason why
+  # it failed.
   def update(position, character)
-    return false unless valid_move?(position, character)
+    status, err_msg = valid_move?(position, character)
+    unless status
+      return status, err_msg
+    end
 
     @cells[position - 1] = character
-    @used_cells += 1
-    true
+    @used_cells += 1 # keep track of used cells
+
+    [true, nil]
   end
 
   # Reset the board
@@ -94,17 +99,19 @@ class Board
   # @param position The position to insert the move.
   # @param character The 'X' or 'O' character to put on the board.
   def valid_move?(position, character)
-    return false if full?
+    return false, 'The board is already full' if full?
 
-    return false unless position.is_a? Integer
+    return false, 'Expected an integer' unless position.is_a? Integer
 
-    return false unless ALLOWED_MOVES.include? character
+    return false, "Expected 'X' or 'O'" unless ALLOWED_MOVES.include? character
 
-    if @cells[position - 1] != ' '
-      false
-    else
-      position - 1 < @cells.length
-    end
+    return false, 'Allowed moves within cells 1 - 9' \
+      unless position - 1 < @cells.length && position.positive?
+
+    return false, 'This position is already filled. Try another spot.' \
+      unless @cells[position - 1] == ' '
+
+    true # It's a valid move if all above weren't matched.
   end
 
   # Check if the board is already full.
