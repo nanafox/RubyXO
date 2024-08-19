@@ -6,7 +6,7 @@ class Board
 
   # Initialize the board with empty fields.
   def initialize
-    @cells = reset
+    @cells = fresh_board
     @used_cells = 0
   end
 
@@ -62,6 +62,12 @@ class Board
 
   # Reset the board
   def reset
+    @cells = fresh_board
+    @used_cells = 0
+  end
+
+  # Generate a fresh board
+  def fresh_board
     @cells = [' '] * 9
   end
 

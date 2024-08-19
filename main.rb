@@ -26,9 +26,11 @@ def main
     break if Utilities.user_won?(PLAYER2)
   end
 
-  main if Utilities.play_again? # Load the game again if user wants to play
+  # Load the game once more if the user chooses to continue playing
+  BOARD.reset and main if Utilities.play_again?
 
   puts 'Thank you for playing the game ☺'
+  exit(0)
 end
 
 # Run the program
