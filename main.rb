@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative 'board'
-require_relative 'player'
-require_relative 'utilities'
+require_relative 'lib/board'
+require_relative 'lib/player'
+require_relative 'lib/utilities'
 
 BOARD = Board.new
-PLAYER1 = Player.new('John', 'P')
+PLAYER1 = Player.new('John', 'X')
 PLAYER2 = Player.new('Sally', 'O')
 
 Utilities.assert(
