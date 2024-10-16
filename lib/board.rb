@@ -21,8 +21,8 @@ class Board
       [@cells[0], @cells[3], @cells[6]], # Left column
       [@cells[1], @cells[4], @cells[7]], # Middle column
       [@cells[2], @cells[5], @cells[8]], # Right column
-      [@cells[0], @cells[4], @cells[8]], # Diagonal from top-left to bottom-right
-      [@cells[2], @cells[4], @cells[6]] # Diagonal from top-right to bottom-left
+      [@cells[0], @cells[4], @cells[8]], # Diag. from top-left to bottom-right
+      [@cells[2], @cells[4], @cells[6]] # Diag. from top-right to bottom-left
     ]
   end
 
@@ -55,9 +55,7 @@ class Board
   # it failed.
   def update(position, character)
     status, err_msg = valid_move?(position, character)
-    unless status
-      return status, err_msg
-    end
+    return status, err_msg unless status
 
     @cells[position - 1] = character
     @used_cells += 1 # keep track of used cells
@@ -73,7 +71,7 @@ class Board
 
   # Generate a fresh board
   def fresh_board
-    @cells = [' '] * 9
+    @cells = [" "] * 9
   end
 
   # Check if a winner has been found so far based on the current board.
@@ -83,33 +81,33 @@ class Board
   # response.
   def winner_found?
     winning_combinations.each do |combination|
-      if combination.all?('X')
-        return [true, 'X']
-      elsif combination.all?('O')
-        return [true, 'O']
+      if combination.all?("X")
+        return [true, "X"]
+      elsif combination.all?("O")
+        return [true, "O"]
       end
     end
 
     [false, nil] # No winner found
   end
 
-  private
+  # private
 
   # Validate that a move on the board is valid before updating
   # @param position The position to insert the move.
   # @param character The 'X' or 'O' character to put on the board.
   def valid_move?(position, character)
-    return false, 'The board is already full' if full?
+    return false, "The board is already full" if full?
 
-    return false, 'Expected an integer' unless position.is_a? Integer
+    return false, "Expected an integer" unless position.is_a? Integer
 
     return false, "Expected 'X' or 'O'" unless ALLOWED_MOVES.include? character
 
-    return false, 'Allowed moves within cells 1 - 9' \
+    return false, "Allowed moves within cells 1 - 9" \
       unless position - 1 < @cells.length && position.positive?
 
-    return false, 'This position is already filled. Try another spot.' \
-      unless @cells[position - 1] == ' '
+    return false, "This position is already filled. Try another spot." \
+      unless @cells[position - 1] == " "
 
     true # It's a valid move if all above weren't matched.
   end
