@@ -91,31 +91,29 @@ class Board
     [false, nil] # No winner found
   end
 
-  private
+  # private
 
-    # Validate that a move on the board is valid before updating
-    # @param position The position to insert the move.
-    # @param character The 'X' or 'O' character to put on the board.
-    def valid_move?(position, character)
-      return false, "The board is already full" if full?
+  # Validate that a move on the board is valid before updating
+  # @param position The position to insert the move.
+  # @param character The 'X' or 'O' character to put on the board.
+  def valid_move?(position, character)
+    return false, "The board is already full" if full?
 
-      return false, "Expected an integer" unless position.is_a? Integer
+    return false, "Expected an integer" unless position.is_a? Integer
 
-      unless ALLOWED_MOVES.include? character
-        return false, "Expected 'X' or 'O'"
-      end
+    return false, "Expected 'X' or 'O'" unless ALLOWED_MOVES.include? character
 
-      return false, "Allowed moves within cells 1 - 9" \
-        unless position - 1 < @cells.length && position.positive?
+    return false, "Allowed moves within cells 1 - 9" \
+      unless position - 1 < @cells.length && position.positive?
 
-      return false, "This position is already filled. Try another spot." \
-        unless @cells[position - 1] == " "
+    return false, "This position is already filled. Try another spot." \
+      unless @cells[position - 1] == " "
 
-      true # It's a valid move if all above weren't matched.
-    end
+    true # It's a valid move if all above weren't matched.
+  end
 
-    # Check if the board is already full.
-    def full?
-      @used_cells == @cells.length
-    end
+  # Check if the board is already full.
+  def full?
+    @used_cells == @cells.length
+  end
 end
